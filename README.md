@@ -40,6 +40,10 @@ Whether to place signs or not:
 
     let g:PyFlakeSigns = 1 
     
+Maximum line length for PyFlakeAuto command
+
+    let g:PyFlakeMaxLineLength = 100
+    
 ## Commands
 
 Disable/enable automatic checking of current file

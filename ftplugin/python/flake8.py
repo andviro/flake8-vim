@@ -43,11 +43,10 @@ def fix_file(filename):
     pep8_fix(filename, Pep8Options)
 
 
-def run_checkers(filename, checkers, ignore, complexity):
+def run_checkers(filename, checkers, ignore):
 
     result = []
 
-    MccabeOptions.complexity = complexity
     for c in checkers:
 
         checker_fun = globals().get(c)
@@ -151,5 +150,5 @@ def _ignore_error(e, ignore):
 if __name__ == '__main__':
     for r in run_checkers(
         '/home/andrew/devel/vim/bundle/flake8-vim/ftplugin/python/flake8.py',
-            checkers=['mccabe', 'pyflakes', 'pep8'], ignore=['E501'], complexity=10):
+            checkers=['mccabe', 'pyflakes', 'pep8'], ignore=[]):
         print r

@@ -52,6 +52,9 @@ endif
 if !exists('g:PyFlakeSigns')
     let g:PyFlakeSigns = 1
 endif
+if !exists('g:PyFlakeMaxLineLength')
+    let g:PyFlakeMaxLineLength = 100
+endif
 
 python << EOF
 
@@ -59,14 +62,15 @@ import sys
 import vim
 
 sys.path.insert(0, vim.eval("g:PyFlakeDirectory"))
-from flake8 import run_checkers, fix_file
+from flake8 import run_checkers, fix_file, Pep8Options, MccabeOptions
 
 def flake8_check():
     checkers=vim.eval('g:PyFlakeCheckers').split(',')
     ignore=vim.eval('g:PyFlakeDisabledMessages').split(',')
-    complexity=int(vim.eval('g:PyFlakeDefaultComplexity'))
+    MccabeOptions.complexity=int(vim.eval('g:PyFlakeDefaultComplexity'))
+    Pep8Options.max_line_length=int(vim.eval('g:PyFlakeMaxLineLength'))
     filename=vim.current.buffer.name
-    parse_result(run_checkers(filename, checkers, ignore, complexity))
+    parse_result(run_checkers(filename, checkers, ignore))
 
 def parse_result(result):
     vim.command(('let g:qf_list = %s' % repr(result)).replace('\': u', '\': '))
