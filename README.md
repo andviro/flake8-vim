@@ -42,10 +42,18 @@ Whether to place signs or not:
     
 ## Commands
 
-PyFlakeToggle:: Disable/enable automatic checking of current file
-PyFlake:: Run checks for current file
-PyFlakeAuto:: Auto-fix pep8 errors for current file
+Disable/enable automatic checking of current file
+
+    :PyFlakeToggle
+    
+Run checks for current file
+
+    :PyFlake
+    
+Auto-fix pep8 errors for current file
+
+    :PyFlakeAuto
 
 ## Author
 
-Andrew Rodionoff, @andviro
+Andrew Rodionoff (@andviro)
