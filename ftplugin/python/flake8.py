@@ -1,6 +1,3 @@
-import locale
-locale.setlocale(locale.LC_CTYPE, "C")
-
 from mccabe.mccabe import get_module_complexity
 from pyflakes import checker, messages
 import _ast
