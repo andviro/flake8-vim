@@ -64,7 +64,6 @@ from flake8 import run_checkers, fix_file
 def flake8_check():
     checkers=vim.eval('g:PyFlakeCheckers').split(',')
     ignore=vim.eval('g:PyFlakeDisabledMessages').split(',')
-    print ignore
     complexity=int(vim.eval('g:PyFlakeDefaultComplexity'))
     filename=vim.current.buffer.name
     parse_result(run_checkers(filename, checkers, ignore, complexity))
