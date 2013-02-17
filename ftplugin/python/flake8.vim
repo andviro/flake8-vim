@@ -44,7 +44,7 @@ if !exists('g:PyFlakeDefaultComplexity')
     let g:PyFlakeDefaultComplexity=10
 endif
 if !exists('g:PyFlakeDisabledMessages')
-    let g:PyFlakeDisabledMessages = ''
+    let g:PyFlakeDisabledMessages = 'E501'
 endif
 if !exists('g:PyFlakeCWindow')
     let g:PyFlakeCWindow = 6
@@ -61,11 +61,13 @@ import vim
 sys.path.insert(0, vim.eval("g:PyFlakeDirectory"))
 from flake8 import run_checkers, fix_file
 
-def check():
+def flake8_check():
     checkers=vim.eval('g:PyFlakeCheckers').split(',')
     ignore=vim.eval('g:PyFlakeDisabledMessages').split(',')
+    print ignore
+    complexity=int(vim.eval('g:PyFlakeDefaultComplexity'))
     filename=vim.current.buffer.name
-    parse_result(run_checkers(filename, checkers, ignore=[], select=[]))
+    parse_result(run_checkers(filename, checkers, ignore, complexity))
 
 def parse_result(result):
     vim.command(('let g:qf_list = %s' % repr(result)).replace('\': u', '\': '))
@@ -87,7 +89,7 @@ function! flake8#run()
 endfun
 
 function! flake8#check()
-    py check()
+    py flake8_check()
     let s:matchDict = {}
     for err in g:qf_list
         let s:matchDict[err.lnum] = err.text

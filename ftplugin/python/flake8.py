@@ -2,11 +2,10 @@ import locale
 locale.setlocale(locale.LC_CTYPE, "C")
 
 from mccabe.mccabe import get_module_complexity
-from pyflakes import checker
+from pyflakes import checker, messages
 import _ast
 from pep8 import pep8 as p8
 from pep8.autopep8 import fix_file as pep8_fix
-import vim
 
 
 class Pep8Options():
@@ -21,14 +20,37 @@ class Pep8Options():
     aggressive = False
 
 
+class MccabeOptions():
+    complexity = 10
+
+flake_code_mapping = {
+    'W402': (messages.UnusedImport,),
+    'W403': (messages.ImportShadowedByLoopVar,),
+    'W404': (messages.ImportStarUsed,),
+    'W405': (messages.LateFutureImport,),
+    'W801': (messages.RedefinedWhileUnused,
+             messages.RedefinedInListComp,),
+    'W802': (messages.UndefinedName,),
+    'W803': (messages.UndefinedExport,),
+    'W804': (messages.UndefinedLocal,
+             messages.UnusedVariable,),
+    'W805': (messages.DuplicateArgument,),
+    'W806': (messages.Redefined,),
+}
+
+flake_class_mapping = dict(
+    (k, c) for (c, v) in flake_code_mapping.items() for k in v)
+
+
 def fix_file(filename):
     pep8_fix(filename, Pep8Options)
 
 
-def run_checkers(filename, checkers, ignore, select):
+def run_checkers(filename, checkers, ignore, complexity):
 
     result = []
 
+    MccabeOptions.complexity = complexity
     for c in checkers:
 
         checker_fun = globals().get(c)
@@ -39,10 +61,10 @@ def run_checkers(filename, checkers, ignore, select):
             for e in checker_fun(filename):
                 e.update(
                     col=e.get('col') or 0,
-                    text="%s [%s]" % (e.get('text', '')
-                                      .strip(
-                                      ).replace(
-                                      "'", "\"").split('\n')[0], c),
+                    text="{} [{}]".format(
+                        e.get('text', '').strip(
+                        ).replace("'", "\"").splitlines()[0],
+                        c),
                     filename=filename,
                     bufnr=0,
                 )
@@ -61,13 +83,12 @@ def run_checkers(filename, checkers, ignore, select):
             print e, '!!!'
             assert True
 
-    result = filter(lambda e: _ignore_error(e, select, ignore), result)
+    result = filter(lambda e: _ignore_error(e, ignore), result)
     return sorted(result, key=lambda x: x['lnum'])
 
 
 def mccabe(filename):
-    complexity = vim.eval('g:PyFlakeDefaultComplexity')
-    return get_module_complexity(filename, min=complexity)
+    return get_module_complexity(filename, min=MccabeOptions.complexity)
 
 
 def pep8(filename):
@@ -86,7 +107,9 @@ def pyflakes(filename):
         errors.append(dict(
             lnum=w.lineno,
             col=0,
-            text=w.message % w.message_args,
+            text=u'{} {}'.format(
+                flake_class_mapping.get(w.__class__, ''),
+                w.message % w.message_args),
             type='E'
         ))
     return errors
@@ -121,10 +144,7 @@ def _init_pep8():
     PEP8['style'] = p8.StyleGuide(reporter=_PEP8Report)
 
 
-def _ignore_error(e, select, ignore):
-    for s in select:
-        if e['text'].startswith(s):
-            return True
+def _ignore_error(e, ignore):
     for i in ignore:
         if e['text'].startswith(i):
             return False
@@ -133,6 +153,5 @@ def _ignore_error(e, select, ignore):
 if __name__ == '__main__':
     for r in run_checkers(
         '/home/andrew/devel/vim/bundle/flake8-vim/ftplugin/python/flake8.py',
-        checkers=['mccabe', 'pyflakes', 'pep8'], select=[],
-            ignore=[]):
+            checkers=['mccabe', 'pyflakes', 'pep8'], ignore=['E501'], complexity=10):
         print r
