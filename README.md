@@ -30,7 +30,7 @@ Default maximum complexity for mccabe:
     
 List of disabled pep8 warnings and errors:
 
-    let g:PyFlakeDissabledMessages = '' 
+    let g:PyFlakeDisabledMessages = 'E501'
 
 Default height of quickfix window:
 

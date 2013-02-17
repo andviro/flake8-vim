@@ -43,8 +43,8 @@ endif
 if !exists('g:PyFlakeDefaultComplexity')
     let g:PyFlakeDefaultComplexity=10
 endif
-if !exists('g:PyFlakeDissabledMessages')
-    let g:PyFlakeDissabledMessages = ''
+if !exists('g:PyFlakeDisabledMessages')
+    let g:PyFlakeDisabledMessages = ''
 endif
 if !exists('g:PyFlakeCWindow')
     let g:PyFlakeCWindow = 6
@@ -63,7 +63,7 @@ from flake8 import run_checkers, fix_file
 
 def check():
     checkers=vim.eval('g:PyFlakeCheckers').split(',')
-    ignore=vim.eval('g:PyFlakeDissabledMessages').split(',')
+    ignore=vim.eval('g:PyFlakeDisabledMessages').split(',')
     filename=vim.current.buffer.name
     parse_result(run_checkers(filename, checkers, ignore=[], select=[]))
 
