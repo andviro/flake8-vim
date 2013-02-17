@@ -92,8 +92,7 @@ def mccabe(filename):
 
 
 def pep8(filename):
-    PEP8 or _init_pep8()
-    style = PEP8['style']
+    style = PEP8 or _init_pep8()
     return style.input_file(filename)
 
 
@@ -115,10 +114,11 @@ def pyflakes(filename):
     return errors
 
 
-PEP8 = dict()
+PEP8 = None
 
 
 def _init_pep8():
+    global PEP8
 
     class _PEP8Report(p8.BaseReport):
 
@@ -141,7 +141,8 @@ def _init_pep8():
         def get_file_results(self):
             return self.errors
 
-    PEP8['style'] = p8.StyleGuide(reporter=_PEP8Report)
+    PEP8 = p8.StyleGuide(reporter=_PEP8Report)
+    return PEP8
 
 
 def _ignore_error(e, ignore):
