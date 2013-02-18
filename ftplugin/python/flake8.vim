@@ -59,6 +59,7 @@ endif
 python << EOF
 
 import sys
+import json
 import vim
 
 sys.path.insert(0, vim.eval("g:PyFlakeDirectory"))
@@ -73,7 +74,7 @@ def flake8_check():
     parse_result(run_checkers(filename, checkers, ignore))
 
 def parse_result(result):
-    vim.command(('let g:qf_list = %s' % repr(result)).replace('\': u', '\': ').replace("'", '"'))
+    vim.command('let g:qf_list = {}'.format(json.dumps(result, ensure_ascii=False)))
 
 EOF
 
