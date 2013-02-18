@@ -72,6 +72,7 @@ def run_checkers(filename, checkers, ignore):
                 lnum=e.lineno,
                 col=e.offset or 0,
                 text=e.args[0],
+                type='E',
                 filename=os.path.normpath(filename),
             ))
             break
