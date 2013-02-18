@@ -3,6 +3,7 @@ from pyflakes import checker, messages
 import _ast
 from pep8 import pep8 as p8
 from pep8.autopep8 import fix_file as pep8_fix
+import os
 
 
 class Pep8Options():
@@ -61,7 +62,7 @@ def run_checkers(filename, checkers, ignore):
                         e.get('text', '').strip(
                         ).replace("'", "\"").splitlines()[0],
                         c),
-                    filename=filename,
+                    filename=os.path.normpath(filename),
                     bufnr=0,
                 )
                 result.append(e)
@@ -71,7 +72,7 @@ def run_checkers(filename, checkers, ignore):
                 lnum=e.lineno,
                 col=e.offset or 0,
                 text=e.args[0],
-                filename=filename,
+                filename=os.path.normpath(filename),
             ))
             break
 
