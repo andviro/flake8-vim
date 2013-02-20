@@ -63,6 +63,7 @@ def run_checkers(filename, checkers, ignore):
                         ).replace("'", "\"").splitlines()[0],
                         c),
                     filename=os.path.normpath(filename),
+                    type=e.get('type') or 'W',
                     bufnr=0,
                 )
                 result.append(e)
