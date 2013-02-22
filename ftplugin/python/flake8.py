@@ -1,8 +1,10 @@
+# coding: utf-8
+
 from mccabe.mccabe import get_module_complexity
 from pyflakes import checker, messages
 import _ast
 from pep8 import pep8 as p8
-from pep8.autopep8 import fix_file as pep8_fix
+from pep8.autopep8 import fix_file as pep8_fix, fix_lines as pep8_fix_lines
 import os
 
 
@@ -42,6 +44,10 @@ flake_class_mapping = dict(
 
 def fix_file(filename):
     pep8_fix(filename, Pep8Options)
+
+
+def fix_lines(lines):
+    return pep8_fix_lines(lines, Pep8Options)
 
 
 def run_checkers(filename, checkers, ignore):

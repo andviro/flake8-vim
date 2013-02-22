@@ -4,6 +4,10 @@ if !has('python')
     finish
 endif
 
+if !exists('g:PyFlakeRangeCommand')
+    let g:PyFlakeRangeCommand = 'Q'
+endif
+
 if !exists('b:PyFlake_initialized')
     let b:PyFlake_initialized = 1
 
@@ -14,7 +18,12 @@ if !exists('b:PyFlake_initialized')
     " Commands
     command! -buffer PyFlakeToggle :let b:PyFlake_disabled = exists('b:PyFlake_disabled') ? b:PyFlake_disabled ? 0 : 1 : 1
     command! -buffer PyFlake :call flake8#run()
-    command! -buffer PyFlakeAuto :call flake8#auto()
+    command! -buffer -range=% PyFlakeAuto :call flake8#auto(<line1>,<line2>)
+
+    " Keymaps
+    if g:PyFlakeRangeCommand != ''
+        exec 'vnoremap <buffer> <silent> ' . g:PyFlakeRangeCommand . ' :PyFlakeAuto<CR>'
+    endif
 
     let b:showing_message = 0
     
@@ -63,7 +72,7 @@ import json
 import vim
 
 sys.path.insert(0, vim.eval("g:PyFlakeDirectory"))
-from flake8 import run_checkers, fix_file, Pep8Options, MccabeOptions
+from flake8 import run_checkers, fix_lines, Pep8Options, MccabeOptions
 
 def flake8_check():
     checkers=vim.eval('g:PyFlakeCheckers').split(',')
@@ -115,18 +124,15 @@ function! flake8#check()
     endif
 endfunction
 
-function! flake8#auto() "{{{
-    if &modifiable && &modified
-        try
-            write
-        catch /E212/
-            echohl Error | echo "File modified and I can't save it. Cancel operation." | echohl None
-            return 0
-        endtry
-    endif
-    py fix_file(vim.current.buffer.name)
+function! flake8#auto(l1, l2) "{{{
     cclose
-    edit
+python << EOF
+start, end = int(vim.eval('a:l1'))-1, int(vim.eval('a:l2'))
+enc = vim.eval('&enc')
+lines = fix_lines(vim.current.buffer[start:end]).splitlines()
+res = [ln.encode(enc, 'replace') for ln in lines]
+vim.current.buffer[start:end] = res
+EOF
 endfunction "}}}
 
 function! flake8#place_signs()

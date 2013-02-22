@@ -43,6 +43,10 @@ Whether to place signs or not:
 Maximum line length for PyFlakeAuto command
 
     let g:PyFlakeMaxLineLength = 100
+
+Visual-mode key command for PyFlakeAuto
+
+    let g:PyFlakeRangeCommand = 'Q'
     
 ## Commands
 
@@ -57,6 +61,13 @@ Run checks for current file
 Auto-fix pep8 errors for current file
 
     :PyFlakeAuto
+    
+`PyFlakeAuto` command by default works with the whole file, but also accepts
+line ranges. Select some lines in Python code, then use `:'<,'>PyFlakeAuto` to
+re-format and fix pep8 errors for them. For every Python buffer Visual-mode
+shortcut is added to quickly fix selection ('Q' by default). Set global
+variable `g:PyFlakeRangeCommand` in .vimrc to change the key sequence. To
+disable visual mode mapping, set this variable to empty string.
 
 ## Author
 
