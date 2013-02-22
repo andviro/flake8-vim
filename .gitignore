@@ -1,6 +1,7 @@
 *~
 *.sw?
 *.py[cod]
+*.zip
 .coverage
 .tox
 .mr.developer.cfg
