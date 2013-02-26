@@ -126,6 +126,10 @@ endfunction
 
 function! flake8#auto(l1, l2) "{{{
     cclose
+    sign unplace *
+    let s:matchDict = {}
+    call setqflist([])
+
 python << EOF
 start, end = int(vim.eval('a:l1'))-1, int(vim.eval('a:l2'))
 enc = vim.eval('&enc')
