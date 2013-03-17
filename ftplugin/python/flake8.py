@@ -64,7 +64,7 @@ def run_checkers(filename, checkers, ignore):
             for e in checker_fun(filename):
                 e.update(
                     col=e.get('col') or 0,
-                    text="{} [{}]".format(
+                    text="{0} [{1}]".format(
                         e.get('text', '').strip(
                         ).replace("'", "\"").splitlines()[0],
                         c),
@@ -73,20 +73,8 @@ def run_checkers(filename, checkers, ignore):
                     bufnr=0,
                 )
                 result.append(e)
-
-        except SyntaxError, e:
-            result.append(dict(
-                lnum=e.lineno,
-                col=e.offset or 0,
-                text=e.args[0],
-                type='E',
-                filename=os.path.normpath(filename),
-            ))
-            break
-
-        except Exception, e:
-            print e, '!!!'
-            assert True
+        except:
+            pass
 
     result = filter(lambda e: _ignore_error(e, ignore), result)
     return sorted(result, key=lambda x: x['lnum'])
@@ -104,18 +92,27 @@ def pep8(filename):
 def pyflakes(filename):
     codeString = file(filename, 'U').read() + '\n'
     errors = []
-    tree = compile(codeString, filename, "exec", _ast.PyCF_ONLY_AST)
-    w = checker.Checker(tree, filename)
-    w.messages.sort(lambda a, b: cmp(a.lineno, b.lineno))
-    for w in w.messages:
+    try:
+        tree = compile(codeString, filename, "exec", _ast.PyCF_ONLY_AST)
+    except SyntaxError as e:
         errors.append(dict(
-            lnum=w.lineno,
-            col=0,
-            text=u'{} {}'.format(
-                flake_class_mapping.get(w.__class__, ''),
-                w.message % w.message_args),
+            lnum=e.lineno or 0,
+            col=e.offset or 0,
+            text=getattr(e, 'msg', None) or str(e),
             type='E'
         ))
+    else:
+        w = checker.Checker(tree, filename)
+        w.messages.sort(lambda a, b: cmp(a.lineno, b.lineno))
+        for w in w.messages:
+            errors.append(dict(
+                lnum=w.lineno,
+                col=0,
+                text=u'{0} {1}'.format(
+                    flake_class_mapping.get(w.__class__, ''),
+                    w.message % w.message_args),
+                type='E'
+            ))
     return errors
 
 
