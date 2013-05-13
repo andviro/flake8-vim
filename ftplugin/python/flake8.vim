@@ -133,7 +133,7 @@ function! flake8#auto(l1, l2) "{{{
 python << EOF
 start, end = int(vim.eval('a:l1'))-1, int(vim.eval('a:l2'))
 enc = vim.eval('&enc')
-lines = fix_lines(vim.current.buffer[start:end]).splitlines()
+lines = fix_lines(list(unicode(x, enc, 'replace') for x in vim.current.buffer[start:end])).splitlines()
 res = [ln.encode(enc, 'replace') for ln in lines]
 vim.current.buffer[start:end] = res
 EOF
