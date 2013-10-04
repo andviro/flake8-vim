@@ -83,7 +83,7 @@ def flake8_check():
     parse_result(run_checkers(filename, checkers, ignore))
 
 def parse_result(result):
-    vim.command('let g:qf_list = {}'.format(json.dumps(result, ensure_ascii=False)))
+    vim.command('let g:qf_list = {0}'.format(json.dumps(result, ensure_ascii=False)))
 
 EOF
 
