@@ -119,7 +119,7 @@ function! flake8#check()
         cclose
         if len(g:qf_list)
             let l:winsize = len(g:qf_list) > g:PyFlakeCWindow ? g:PyFlakeCWindow : len(g:qf_list)
-            exec l:winsize . 'cwindow'
+            exec 'botright ' . l:winsize . 'cwindow'
         endif
     endif
 endfunction
