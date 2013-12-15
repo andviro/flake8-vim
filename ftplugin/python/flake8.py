@@ -1,11 +1,22 @@
 # coding: utf-8
 
-from mccabe.mccabe import get_module_complexity
+import vim
+import os
+import sys
+# get the directory this script is in
+base_dir = os.path.dirname(vim.eval('expand("<sfile>")'))
+print base_dir
+
+# import mccabe
+mccabe_dir = os.path.join(base_dir, 'mccabe')
+if mccabe_dir not in sys.path:
+    sys.path.insert(0, mccabe_dir)
+from mccabe import get_module_complexity
+
 from pyflakes import checker, messages
 import _ast
 from pep8 import pep8 as p8
 from pep8.autopep8 import fix_file as pep8_fix, fix_lines as pep8_fix_lines
-import os
 
 
 class Pep8Options():

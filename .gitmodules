@@ -1,0 +1,3 @@
+[submodule "ftplugin/python/mccabe"]
+	path = ftplugin/python/mccabe
+	url = https://github.com/flintwork/mccabe.git
