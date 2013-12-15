@@ -32,6 +32,10 @@ List of disabled pep8 warnings and errors:
 
     let g:PyFlakeDisabledMessages = 'E501'
 
+Default aggressiveness for autopep8:
+
+    let g:PyFlakeAggressive = 0
+
 Default height of quickfix window:
 
     let g:PyFlakeCWindow = 6 
@@ -72,3 +76,8 @@ disable visual mode mapping, set this variable to empty string.
 ## Author
 
 Andrew Rodionoff (@andviro)
+
+## Contributors
+
+- OGURA_Daiki (@hachibeeDI)
+- Pål (@maedox)

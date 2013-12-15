@@ -61,6 +61,9 @@ endif
 if !exists('g:PyFlakeSigns')
     let g:PyFlakeSigns = 1
 endif
+if !exists('g:PyFlakeAggressive')
+    let g:PyFlakeAggressive = 0
+endif
 if !exists('g:PyFlakeMaxLineLength')
     let g:PyFlakeMaxLineLength = 100
 endif
@@ -79,6 +82,7 @@ def flake8_check():
     ignore=vim.eval('g:PyFlakeDisabledMessages').split(',')
     MccabeOptions.complexity=int(vim.eval('g:PyFlakeDefaultComplexity'))
     Pep8Options.max_line_length=int(vim.eval('g:PyFlakeMaxLineLength'))
+    Pep8Options.aggressive=int(vim.eval('g:PyFlakeAggressive'))
     filename=vim.current.buffer.name
     parse_result(run_checkers(filename, checkers, ignore))
 
