@@ -11,7 +11,7 @@ def append_submodules(module):
     if module_dir not in sys.path:
         print module_dir
         sys.path.insert(0, module_dir)
-[append_submodules(module) for module in ['mccabe', 'pep8', 'autopep8']]
+[append_submodules(module) for module in ['mccabe', 'pep8', 'autopep8', 'pyflakes']]
 
 from mccabe import get_module_complexity
 from pyflakes import checker, messages
