@@ -1,17 +1,14 @@
 # coding: utf-8
+SUBMODULES = ['mccabe', 'pep8', 'autopep8', 'pyflakes']
 
-import vim
-import os
 import sys
-# get the directory this script is in
-base_dir = os.path.dirname(vim.eval('expand("<sfile>")'))
-# make importable each modules
-def append_submodules(module):
-    module_dir = os.path.join(base_dir, module)
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+for module in SUBMODULES:
+    module_dir = os.path.join(BASE_DIR, module)
     if module_dir not in sys.path:
-        print module_dir
         sys.path.insert(0, module_dir)
-[append_submodules(module) for module in ['mccabe', 'pep8', 'autopep8', 'pyflakes']]
+
 
 from mccabe import get_module_complexity
 from pyflakes import checker, messages
@@ -31,7 +28,7 @@ class Pep8Options():
     indent_size = DEFAULT_INDENT_SIZE
     ignore = ''
     select = ''
-    aggressive = False
+    aggressive = 0
 
 
 class MccabeOptions():
