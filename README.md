@@ -10,6 +10,13 @@ package manager for Vim and run command:
 
     BundleInstall andviro/flake8-vim
 
+
+And first thing you need after installation is to get modules by
+`git submodule update --init` in your flake8-vim repository.
+
+Or I recommend using Shougo/neobundle.vim(https://github.com/Shougo/neobundle.vim) .
+That can install and update submodules automatically.
+
 ## Configuration
 
 By default python source code is checked with pyflakes, pep8 and mccabe code
