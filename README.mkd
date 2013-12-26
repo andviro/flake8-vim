@@ -5,17 +5,26 @@ _pylint-mode_ plugin by Kirill Klenov.
 
 ## Installation
 
-Copy plugin folders into your .vim directory. Alternatively use _vundle_
-package manager for Vim and run command:
+### Manual installation
+
+Clone plugin repository using Git:
+
+    git clone --recursive https://github.com/andviro/flake8-vim.git
+
+Copy `ftplugin` folder into your Vim home directory.
+
+### Using plugin manager (recommended)
+
+Install [Vundle](http://github.com/gmarik/vundle), then run bundle install
+command:
 
     BundleInstall andviro/flake8-vim
 
 
-And first thing you need after installation is to get modules by
-`git submodule update --init` in your flake8-vim repository.
+Alternatively install [Neobundle](https://github.com/Shougo/neobundle.vim) and
+load plugin using command:
 
-Or I recommend using Shougo/neobundle.vim(https://github.com/Shougo/neobundle.vim) .
-That can install and update submodules automatically.
+    NeoBundleInstall andviro/flake8-vim
 
 ## Configuration
 
