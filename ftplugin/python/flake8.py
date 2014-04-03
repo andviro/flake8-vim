@@ -1,5 +1,5 @@
 # coding: utf-8
-SUBMODULES = ['mccabe', 'pep8', 'autopep8', 'pyflakes']
+SUBMODULES = ['mccabe', 'pep8', 'autopep8', 'frosted', 'pies']
 
 import sys
 import os
@@ -11,7 +11,8 @@ for module in SUBMODULES:
 
 
 from mccabe import get_module_complexity
-from pyflakes import checker, messages
+from frosted.api import checker
+from frosted import messages
 import _ast
 import pep8 as p8
 from autopep8 import fix_file as pep8_fix, fix_lines as pep8_fix_lines, DEFAULT_INDENT_SIZE

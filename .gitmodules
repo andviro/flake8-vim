@@ -7,6 +7,9 @@
 [submodule "ftplugin/python/pep8"]
 	path = ftplugin/python/pep8
 	url = https://github.com/jcrocholl/pep8.git
-[submodule "ftplugin/python/pyflakes"]
-	path = ftplugin/python/pyflakes
-	url = https://github.com/pyflakes/pyflakes.git
+[submodule "ftplugin/python/frosted"]
+	path = ftplugin/python/frosted
+	url = https://github.com/timothycrosley/frosted.git
+[submodule "ftplugin/python/pies"]
+	path = ftplugin/python/pies
+	url = https://github.com/timothycrosley/pies.git
