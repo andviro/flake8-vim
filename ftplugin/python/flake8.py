@@ -10,7 +10,7 @@ for module in SUBMODULES:
         sys.path.insert(0, module_dir)
 
 
-from mccabe import get_module_complexity
+from mccabe import McCabeChecker
 from frosted.api import checker
 from frosted import messages
 import _ast
@@ -69,9 +69,8 @@ def run_checkers(filename, checkers, ignore):
     for c in checkers:
 
         checker_fun = globals().get(c)
-        if not checker:
+        if not checker_fun:
             continue
-
         try:
             for e in checker_fun(filename):
                 e.update(
@@ -85,7 +84,7 @@ def run_checkers(filename, checkers, ignore):
                     bufnr=0,
                 )
                 result.append(e)
-        except:
+        except Exception:
             pass
 
     result = filter(lambda e: _ignore_error(e, ignore), result)
@@ -93,7 +92,21 @@ def run_checkers(filename, checkers, ignore):
 
 
 def mccabe(filename):
-    return get_module_complexity(filename, min=MccabeOptions.complexity)
+    with open(filename, "rU") as mod:
+        code = mod.read()
+    try:
+        tree = compile(code, filename, "exec", _ast.PyCF_ONLY_AST)
+    except SyntaxError:
+        e = sys.exc_info()[1]
+        sys.stderr.write("Unable to parse %s: %s\n" % (filename, e))
+        return 0
+
+    complx = []
+    McCabeChecker.max_complexity = MccabeOptions.complexity
+    for lineno, offset, text, check in McCabeChecker(tree, filename).run():
+        complx.append('%s:%d:1: %s' % (filename, lineno, text))
+
+    return complx
 
 
 def pep8(filename):
@@ -122,7 +135,7 @@ def frosted(filename):
                 col=0,
                 text=u'{0} {1}'.format(
                     flake_class_mapping.get(w.__class__, ''),
-                    w.message % w.message_args),
+                    w.message),
                 type='E'
             ))
     return errors
@@ -166,7 +179,5 @@ def _ignore_error(e, ignore):
     return True
 
 if __name__ == '__main__':
-    for r in run_checkers(
-        '/home/andrew/devel/vim/bundle/flake8-vim/ftplugin/python/flake8.py',
-            checkers=['mccabe', 'frosted', 'pep8'], ignore=[]):
+    for r in run_checkers(__file__, checkers=['mccabe', 'frosted', 'pep8'], ignore=[]):
         print r
