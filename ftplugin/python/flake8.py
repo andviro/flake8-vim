@@ -101,7 +101,7 @@ def pep8(filename):
     return style.input_file(filename)
 
 
-def pyflakes(filename):
+def frosted(filename):
     codeString = file(filename, 'U').read() + '\n'
     errors = []
     try:
@@ -168,5 +168,5 @@ def _ignore_error(e, ignore):
 if __name__ == '__main__':
     for r in run_checkers(
         '/home/andrew/devel/vim/bundle/flake8-vim/ftplugin/python/flake8.py',
-            checkers=['mccabe', 'pyflakes', 'pep8'], ignore=[]):
+            checkers=['mccabe', 'frosted', 'pep8'], ignore=[]):
         print r

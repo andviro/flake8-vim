@@ -1,4 +1,4 @@
-# Flake8-vim: pyflakes, pep8 and mcabe checker for Vim
+# Flake8-vim: frosted, pep8 and mcabe checker for Vim
 
 Flake8-vim is a Vim plugin that checks python sources for errors. It's based on
 _pylint-mode_ plugin by Kirill Klenov.
@@ -28,9 +28,10 @@ load plugin using command:
 
 ## Configuration
 
-By default python source code is checked with pyflakes, pep8 and mccabe code
-complexity utility. The following options can be configured through global
-variables in .vimrc:
+By default python source code is checked with [frosted](https://github.com/timothycrosley/frosted),
+[pep8](https://github.com/jcrocholl/pep8) and
+[mccabe code complexity utility](https://github.com/flintwork/mccabe).
+The following options can be configured through global variables in .vimrc:
 
 Auto-check file for errors on write:
 
@@ -38,7 +39,7 @@ Auto-check file for errors on write:
 
 List of checkers used:
 
-    let g:PyFlakeCheckers = 'pep8,mccabe,pyflakes'
+    let g:PyFlakeCheckers = 'pep8,mccabe,frosted'
     
 Default maximum complexity for mccabe:
 
