@@ -30,6 +30,7 @@ class Pep8Options():
     ignore = ''
     select = ''
     aggressive = 0
+    experimental = False
 
 
 class MccabeOptions():
@@ -94,17 +95,15 @@ def run_checkers(filename, checkers, ignore):
 def mccabe(filename):
     with open(filename, "rU") as mod:
         code = mod.read()
-    try:
-        tree = compile(code, filename, "exec", _ast.PyCF_ONLY_AST)
-    except SyntaxError:
-        e = sys.exc_info()[1]
-        sys.stderr.write("Unable to parse %s: %s\n" % (filename, e))
-        return 0
+        try:
+            tree = compile(code, filename, "exec", _ast.PyCF_ONLY_AST)
+        except Exception:
+            return 0
 
     complx = []
     McCabeChecker.max_complexity = MccabeOptions.complexity
     for lineno, offset, text, check in McCabeChecker(tree, filename).run():
-        complx.append('%s:%d:1: %s' % (filename, lineno, text))
+        complx.append(dict(col=offset, lnum=lineno, text=text))
 
     return complx
 
