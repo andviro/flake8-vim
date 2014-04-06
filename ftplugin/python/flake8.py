@@ -16,11 +16,19 @@ from frosted import messages
 import _ast
 import pep8 as p8
 from autopep8 import fix_file as pep8_fix, fix_lines as pep8_fix_lines, DEFAULT_INDENT_SIZE, continued_indentation as autopep8_c_i
+from contextlib import contextmanager
 
 
-if autopep8_c_i in p8._checks['logical_line']:
-    del p8._checks['logical_line'][autopep8_c_i]
-    p8.register_check(p8.continued_indentation)
+@contextmanager
+def patch_pep8():
+    if autopep8_c_i in p8._checks['logical_line']:
+        del p8._checks['logical_line'][autopep8_c_i]
+        p8.register_check(p8.continued_indentation)
+    try:
+        yield
+    finally:
+        del p8._checks['logical_line'][p8.continued_indentation]
+        p8.register_check(autopep8_c_i)
 
 
 class Pep8Options():
@@ -114,8 +122,9 @@ def mccabe(filename):
 
 
 def pep8(filename):
-    style = PEP8 or _init_pep8()
-    return style.input_file(filename)
+    with patch_pep8():
+        style = PEP8 or _init_pep8()
+        return style.input_file(filename)
 
 
 def frosted(filename):
