@@ -134,7 +134,7 @@ def frosted(filename):
                 col=0,
                 text=u'{0} {1}'.format(
                     flake_class_mapping.get(w.__class__, ''),
-                    w.message),
+                    w.message.split(':', 2)[-1].strip()),
                 type='E'
             ))
     return errors
