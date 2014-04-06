@@ -67,6 +67,9 @@ endif
 if !exists('g:PyFlakeMaxLineLength')
     let g:PyFlakeMaxLineLength = 100
 endif
+if !exists('g:PyFlakeLineIndentGlitch')
+    let g:PyFlakeLineIndentGlitch = 1
+endif
 
 python << EOF
 
