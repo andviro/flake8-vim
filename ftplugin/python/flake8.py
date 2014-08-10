@@ -1,4 +1,6 @@
 # coding: utf-8
+from __future__ import print_function
+
 SUBMODULES = ['mccabe', 'pep8', 'autopep8', 'frosted', 'pies']
 
 import sys
@@ -111,7 +113,7 @@ def mccabe(filename):
         try:
             tree = compile(code, filename, "exec", _ast.PyCF_ONLY_AST)
         except Exception:
-            return 0
+            return []
 
     complx = []
     McCabeChecker.max_complexity = MccabeOptions.complexity
@@ -128,7 +130,7 @@ def pep8(filename):
 
 
 def frosted(filename):
-    codeString = file(filename, 'U').read() + '\n'
+    codeString = open(filename, 'U').read() + '\n'
     errors = []
     try:
         tree = compile(codeString, filename, "exec", _ast.PyCF_ONLY_AST)
@@ -193,4 +195,4 @@ def _ignore_error(e, ignore):
 
 if __name__ == '__main__':
     for r in run_checkers(__file__, checkers=['mccabe', 'frosted', 'pep8'], ignore=[]):
-        print r
+        print(r)

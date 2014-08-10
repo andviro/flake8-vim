@@ -1,7 +1,13 @@
 " Check python support
-if !has('python')
+if !has('python') && !has('python3')
     echo "Error: PyFlake.vim required vim compiled with +python."
     finish
+endif
+
+if has("python3")
+	command! -nargs=1 Flake8py py3 <args>
+else
+	command! -nargs=1 Flake8Py py <args>
 endif
 
 if !exists('g:PyFlakeRangeCommand')
@@ -71,7 +77,7 @@ if !exists('g:PyFlakeLineIndentGlitch')
     let g:PyFlakeLineIndentGlitch = 1
 endif
 
-python << EOF
+Flake8py << EOF
 
 import sys
 import json
@@ -109,7 +115,7 @@ function! flake8#run()
 endfun
 
 function! flake8#check()
-    py flake8_check()
+    Flake8py flake8_check()
     let s:matchDict = {}
     for err in g:qf_list
         let s:matchDict[err.lnum] = err.text
@@ -137,7 +143,7 @@ function! flake8#auto(l1, l2) "{{{
     let s:matchDict = {}
     call setqflist([])
 
-python << EOF
+Flake8py << EOF
 start, end = int(vim.eval('a:l1'))-1, int(vim.eval('a:l2'))
 enc = vim.eval('&enc')
 lines = fix_lines(list(unicode(x, enc, 'replace') for x in vim.current.buffer[start:end])).splitlines()
