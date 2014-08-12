@@ -19,6 +19,7 @@ import _ast
 import pep8 as p8
 from autopep8 import fix_file as pep8_fix, fix_lines as pep8_fix_lines, DEFAULT_INDENT_SIZE, continued_indentation as autopep8_c_i
 from contextlib import contextmanager
+from operator import attrgetter
 
 
 @contextmanager
@@ -143,7 +144,7 @@ def frosted(filename):
         ))
     else:
         w = checker.Checker(tree, filename)
-        w.messages.sort(lambda a, b: cmp(a.lineno, b.lineno))
+        w.messages.sort(key=attrgetter('lineno'))
         for w in w.messages:
             errors.append(dict(
                 lnum=w.lineno,
