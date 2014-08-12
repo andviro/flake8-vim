@@ -13,7 +13,7 @@ for module in SUBMODULES:
 
 
 from mccabe import McCabeChecker
-from frosted.api import checker
+from frosted.api import checker, _noqa_lines
 from frosted import messages
 import _ast
 import pep8 as p8
@@ -143,9 +143,8 @@ def frosted(filename):
             type='E'
         ))
     else:
-        w = checker.Checker(tree, filename)
-        w.messages.sort(key=attrgetter('lineno'))
-        for w in w.messages:
+        w = checker.Checker(tree, filename, ignore_lines=_noqa_lines(codeString))
+        for w in sorted(w.messages, key=attrgetter('lineno')):
             errors.append(dict(
                 lnum=w.lineno,
                 col=0,
