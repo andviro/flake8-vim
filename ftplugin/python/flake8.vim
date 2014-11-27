@@ -5,6 +5,8 @@ if !has('python') && !has('python3')
 endif
 
 let s:pycmd = has('python') ? ':py' : ':py3'
+" This is the last sign used, so that we can remove them individually.
+let s:last_sign = 1
 
 if !exists('g:PyFlakeRangeCommand')
     let g:PyFlakeRangeCommand = 'Q'
@@ -62,6 +64,11 @@ if !exists('g:PyFlakeCWindow')
 endif
 if !exists('g:PyFlakeSigns')
     let g:PyFlakeSigns = 1
+endif
+if !exists('g:PyFlakeSignStart')
+    " What is the first sign id that we should use. This is usefull when
+    " there are multiple plugins intalled that use the sign gutter
+    let g:PyFlakeSignStart = 1
 endif
 if !exists('g:PyFlakeAggressive')
     let g:PyFlakeAggressive = 0
@@ -135,7 +142,10 @@ endfunction
 
 function! flake8#auto(l1, l2) "{{{
     cclose
-    sign unplace *
+    while s:last_sign >= g:PyFlakeSignStart
+        execute "sign unplace" s:last_sign
+        let s:last_sign -= 1
+    endwhile
     let s:matchDict = {}
     call setqflist([])
 
@@ -149,14 +159,18 @@ EOF
 endfunction "}}}
 
 function! flake8#place_signs()
-    "first remove all sings
-    sign unplace *
+    " first remove previous inserted signs. Removing them by id instead of
+    " unplace *, so that this can live in peace with other plugins.
+    while s:last_sign >= g:PyFlakeSignStart
+        execute "sign unplace" s:last_sign
+        let s:last_sign -= 1
+    endwhile
 
     "now we place one sign for every quickfix line
-    let l:id = 1
+    let s:last_sign = g:PyFlakeSignStart - 1
     for item in getqflist()
-        execute(':sign place '.l:id.' name='.l:item.type.' line='.l:item.lnum.' buffer='.l:item.bufnr)
-        let l:id = l:id + 1
+        let s:last_sign += 1
+        execute(':sign place '.s:last_sign.' name='.l:item.type.' line='.l:item.lnum.' buffer='.l:item.bufnr)
     endfor
 endfunction
 

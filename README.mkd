@@ -60,7 +60,13 @@ Default height of quickfix window:
 Whether to place signs or not:
 
     let g:PyFlakeSigns = 1 
-    
+
+When usign signs, this is the first id that will be used to identify the
+signs. Tweak this if you are using other plugins that also use the sign
+gutter
+
+    let g:PyFlakeSignStart = 1
+
 Maximum line length for PyFlakeAuto command
 
     let g:PyFlakeMaxLineLength = 100
