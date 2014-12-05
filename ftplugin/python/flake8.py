@@ -1,5 +1,4 @@
 # coding: utf-8
-from __future__ import print_function
 
 SUBMODULES = ['mccabe', 'pep8', 'autopep8', 'frosted', 'pies']
 
