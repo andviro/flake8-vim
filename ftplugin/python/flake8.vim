@@ -4,7 +4,7 @@ if !has('python') && !has('python3')
     finish
 endif
 
-let s:pycmd = has('python') ? ':py' : ':py3'
+let s:pycmd = has('python') && (!exists('g:PyFlakeForcePyVersion') || g:PyFlakeForcePyVersion != 3) ? ':py' : ':py3'
 " This is the last sign used, so that we can remove them individually.
 let s:last_sign = 1
 
