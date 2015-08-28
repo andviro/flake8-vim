@@ -74,6 +74,10 @@ Maximum line length for PyFlakeAuto command
 Visual-mode key command for PyFlakeAuto
 
     let g:PyFlakeRangeCommand = 'Q'
+
+Force python 3 interface:
+
+    let g:PyFlakeForcePyVersion = 3
     
 ## Commands
 
