@@ -80,29 +80,6 @@ if !exists('g:PyFlakeLineIndentGlitch')
     let g:PyFlakeLineIndentGlitch = 1
 endif
 
-exec s:pycmd . ' << EOF'
-
-import sys
-import json
-import vim
-
-sys.path.insert(0, vim.eval("g:PyFlakeDirectory"))
-from flake8 import run_checkers, fix_lines, Pep8Options, MccabeOptions
-
-def flake8_check():
-    checkers=vim.eval('g:PyFlakeCheckers').split(',')
-    ignore=vim.eval('g:PyFlakeDisabledMessages').split(',')
-    MccabeOptions.complexity=int(vim.eval('g:PyFlakeDefaultComplexity'))
-    Pep8Options.max_line_length=int(vim.eval('g:PyFlakeMaxLineLength'))
-    Pep8Options.aggressive=int(vim.eval('g:PyFlakeAggressive'))
-    filename=vim.current.buffer.name
-    parse_result(run_checkers(filename, checkers, ignore))
-
-def parse_result(result):
-    vim.command('let g:qf_list = {0}'.format(json.dumps(result, ensure_ascii=False)))
-
-EOF
-
 function! flake8#on_write()
     if !g:PyFlakeOnWrite || exists("b:PyFlake_disabled") && b:PyFlake_disabled
         return
@@ -209,3 +186,38 @@ function! flake8#get_message()
         let b:showing_message = 0
     endif
 endfunction
+
+function! flake8#force_py_version(version)
+    let ver = a:version == 3 ? '3' : ''
+    let s:pycmd = ':py' . ver
+    if !py{ver}eval('"flake8_check" in dir()')
+      call s:init_py_modules()
+    endif
+endfunction "}}}
+
+function! s:init_py_modules()
+exec s:pycmd . ' << EOF'
+
+import sys
+import json
+import vim
+
+sys.path.insert(0, vim.eval("g:PyFlakeDirectory"))
+from flake8 import run_checkers, fix_lines, Pep8Options, MccabeOptions
+
+def flake8_check():
+    checkers=vim.eval('g:PyFlakeCheckers').split(',')
+    ignore=vim.eval('g:PyFlakeDisabledMessages').split(',')
+    MccabeOptions.complexity=int(vim.eval('g:PyFlakeDefaultComplexity'))
+    Pep8Options.max_line_length=int(vim.eval('g:PyFlakeMaxLineLength'))
+    Pep8Options.aggressive=int(vim.eval('g:PyFlakeAggressive'))
+    filename=vim.current.buffer.name
+    parse_result(run_checkers(filename, checkers, ignore))
+
+def parse_result(result):
+    vim.command('let g:qf_list = {0}'.format(json.dumps(result, ensure_ascii=False)))
+
+EOF
+endfunction
+
+call s:init_py_modules()
