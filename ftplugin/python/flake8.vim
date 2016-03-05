@@ -57,7 +57,7 @@ if !exists('g:PyFlakeDefaultComplexity')
     let g:PyFlakeDefaultComplexity=10
 endif
 if !exists('g:PyFlakeDisabledMessages')
-    let g:PyFlakeDisabledMessages = 'E501'
+    let g:PyFlakeDisabledMessages = ''
 endif
 if !exists('g:PyFlakeCWindow')
     let g:PyFlakeCWindow = 6
@@ -74,7 +74,7 @@ if !exists('g:PyFlakeAggressive')
     let g:PyFlakeAggressive = 0
 endif
 if !exists('g:PyFlakeMaxLineLength')
-    let g:PyFlakeMaxLineLength = 100
+    let g:PyFlakeMaxLineLength = 79
 endif
 if !exists('g:PyFlakeLineIndentGlitch')
     let g:PyFlakeLineIndentGlitch = 1
