@@ -182,7 +182,10 @@ def _init_pep8():
         def get_file_results(self):
             return self.errors
 
-    PEP8 = p8.StyleGuide(reporter=_PEP8Report)
+    PEP8 = p8.StyleGuide(reporter=_PEP8Report,
+                         ignore=Pep8Options.ignore,
+                         select=Pep8Options.select,
+                         max_line_length=Pep8Options.max_line_length)
     return PEP8
 
 
