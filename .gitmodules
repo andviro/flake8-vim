@@ -4,9 +4,9 @@
 [submodule "ftplugin/python/autopep8"]
 	path = ftplugin/python/autopep8
 	url = https://github.com/hhatto/autopep8.git
-[submodule "ftplugin/python/pep8"]
-	path = ftplugin/python/pep8
-	url = https://github.com/jcrocholl/pep8.git
+[submodule "ftplugin/python/pycodestyle"]
+	path = ftplugin/python/pycodestyle
+	url = https://github.com/PyCQA/pycodestyle.git
 [submodule "ftplugin/python/frosted"]
 	path = ftplugin/python/frosted
 	url = https://github.com/timothycrosley/frosted.git
