@@ -1,6 +1,6 @@
 # coding: utf-8
 
-SUBMODULES = ['mccabe', 'pep8', 'autopep8', 'frosted', 'pies']
+SUBMODULES = ['mccabe', 'pycodestyle', 'autopep8', 'frosted', 'pies']
 
 import sys
 import os
@@ -15,7 +15,7 @@ from mccabe import McCabeChecker
 from frosted.api import checker, _noqa_lines
 from frosted import messages
 import _ast
-import pep8 as p8
+import pycodestyle as p8
 from autopep8 import fix_file as pep8_fix, fix_lines as pep8_fix_lines, DEFAULT_INDENT_SIZE, continued_indentation as autopep8_c_i
 from contextlib import contextmanager
 from operator import attrgetter
