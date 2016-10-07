@@ -51,6 +51,7 @@ class Pep8Options():
 class MccabeOptions():
     complexity = 10
 
+
 flake_code_mapping = {
     'W402': (messages.UnusedImport,),
     'W403': (messages.ImportShadowedByLoopVar,),
@@ -182,7 +183,10 @@ def _init_pep8():
         def get_file_results(self):
             return self.errors
 
-    PEP8 = p8.StyleGuide(reporter=_PEP8Report)
+    PEP8 = p8.StyleGuide(reporter=_PEP8Report,
+                         ignore=Pep8Options.ignore,
+                         select=Pep8Options.select,
+                         max_line_length=Pep8Options.max_line_length)
     return PEP8
 
 
@@ -191,6 +195,7 @@ def _ignore_error(e, ignore):
         if e['text'].startswith(i):
             return False
     return True
+
 
 if __name__ == '__main__':
     for r in run_checkers(__file__, checkers=['mccabe', 'frosted', 'pep8'], ignore=[]):
