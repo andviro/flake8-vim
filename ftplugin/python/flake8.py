@@ -46,6 +46,7 @@ class Pep8Options():
     select = ''
     aggressive = 0
     experimental = False
+    hang_closing = False
 
 
 class MccabeOptions():
@@ -186,7 +187,8 @@ def _init_pep8():
     PEP8 = p8.StyleGuide(reporter=_PEP8Report,
                          ignore=Pep8Options.ignore,
                          select=Pep8Options.select,
-                         max_line_length=Pep8Options.max_line_length)
+                         max_line_length=Pep8Options.max_line_length,
+                         hang_closing=Pep8Options.hang_closing)
     return PEP8
 
 
