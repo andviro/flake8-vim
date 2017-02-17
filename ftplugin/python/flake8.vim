@@ -205,6 +205,10 @@ import sys
 import json
 import vim
 
+if sys.version_info >= (3,):
+    def unicode(str, *args):
+        return str
+
 sys.path.insert(0, vim.eval("g:PyFlakeDirectory"))
 from flake8 import run_checkers, fix_lines, Pep8Options, MccabeOptions
 
